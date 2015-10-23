@@ -47,6 +47,7 @@
   }
 
   function shift_cipher_validate_direction($element) {
+    //Validates that user input left or right for direction, regardless of capitalization
     $direction_input = strtolower($element['#value']);
     if(!($direction_input === 'left' || $direction_input === 'right')) {
       form_error($element, t("Please enter 'left' or 'right'."));
@@ -54,6 +55,7 @@
   }
 
   function shift_cipher_validate_phrase($element) {
+    //Validates that users are only able to input letters and punctuation
     $input_string = strtolower($element['#value']);
     $input_phrase_array = str_split($input_string);
     $letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
@@ -66,6 +68,7 @@
   }
 
   function shift_cipher_form_submit($form, &$form_state) {
+    //Gets the values from the form
     $shift_value = $form_state['values']['shift_value'];
     $direction = strtolower($form_state['values']['direction']);
     $phrase = str_split(strtolower($form_state['values']['phrase']));
@@ -73,16 +76,20 @@
     $output = "";
     $letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
 
+    //Loops through the user inputted string
     for($i = 0; $i < sizeof($phrase); $i++) {
+      //Checks if current character is a letter
       if(in_array($phrase[$i], $letters)) {
         $letter_position = array_search($phrase[$i], $letters);
         if($direction === "right") {
+          //Finds the shifted letter to the right
           if(($letter_position + $shift_value) > 25) {
             $output .= $letters[$letter_position+$shift_value-25];
           } else {
             $output .= $letters[$letter_position+$shift_value];
           }
         } else {
+          //Finds the shifted letter to the left
           if(($letter_position - $shift_value) < 0) {
             $output .= $letters[$letter_position-$shift_value+26];
           } else {
@@ -90,6 +97,7 @@
           }
         }
       } else {
+        //Adds the punctuation without shifting
         $output .= $phrase[$i];
       }
     }
