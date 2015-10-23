@@ -11,7 +11,7 @@ Setup
 -Clone the repository from GitHub
 -Open MAMP, direct the path to the root project folder, and start the servers
 -Go to localhost:8888/phpmyadmin
--Select Import->Choose File, then select the database localhost.sql.zip in sites/db-backup, and click Go
+-Select Import->Choose File, then select the database casey_cipher.sql.zip in sites/db-backup, and click Go
 -Under Privileges, select Add User and add the database user listed below
 -Open the site in your browser from your localhost
 
