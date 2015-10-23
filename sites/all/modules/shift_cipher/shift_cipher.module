@@ -68,33 +68,29 @@
   function shift_cipher_form_submit($form, &$form_state) {
     $shift_value = $form_state['values']['shift_value'];
     $direction = strtolower($form_state['values']['direction']);
-    $_SESSION['direction'] = $direction;
     $phrase = str_split(strtolower($form_state['values']['phrase']));
+
     $output = "";
     $letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+
     for($i = 0; $i < sizeof($phrase); $i++) {
-      if($direction === "right") {
-        if(in_array($phrase[$i], $letters)) {
-          $letter_position = array_search($phrase[$i], $letters);
+      if(in_array($phrase[$i], $letters)) {
+        $letter_position = array_search($phrase[$i], $letters);
+        if($direction === "right") {
           if(($letter_position + $shift_value) > 25) {
             $output .= $letters[$letter_position+$shift_value-25];
           } else {
             $output .= $letters[$letter_position+$shift_value];
           }
         } else {
-          $output .= $phrase[$i];
+          if(($letter_position - $shift_value) < 0) {
+            $output .= $letters[$letter_position-$shift_value+26];
+          } else {
+            $output .= $letters[$letter_position-$shift_value];
+          }
         }
       } else {
-          if(in_array($phrase[$i], $letters)) {
-            $letter_position = array_search($phrase[$i], $letters);
-            if(($letter_position - $shift_value) < 0) {
-              $output .= $letters[$letter_position-$shift_value+26];
-            } else {
-              $output .= $letters[$letter_position-$shift_value];
-            }
-          } else {
-            $output .= $phrase[$i];
-          }
+        $output .= $phrase[$i];
       }
     }
     $_SESSION['output_string'] = $output;
@@ -103,6 +99,5 @@
 
   function encoded_result() {
     $output_string = $_SESSION['output_string'];
-    $direction = $_SESSION['direction'];
-    return "Your encoded string is: $output_string and the direction is: $direction";
+    return "Your encoded string is: $output_string";
   }
