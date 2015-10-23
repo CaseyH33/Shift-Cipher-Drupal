@@ -22,20 +22,21 @@
         '#title' => 'Shift value',
         '#type' => 'textfield',
         '#description' => t('Enter the shift value'),
+        '#element_validate' => array('element_validate_integer_positive'),
         '#required' => TRUE,
     );
     $form['direction'] = array(
         '#title' => 'Direction',
         '#type' => 'textfield',
         '#description' => t('Enter the shift direction'),
-        '#element_validate' => array('element_validate_state'),
+        '#element_validate' => array('shift_cipher_validate_direction'),
         '#required' => TRUE,
     );
     $form['phrase'] = array(
         '#title' => 'Phrase',
         '#type' => 'textfield',
         '#description' => t('Enter the phrase to be encoded'),
-        '#element_validate' => array('element_validate_state'),
+        '#element_validate' => array('shift_cipher_validate_phrase'),
         '#required' => TRUE,
     );
     $form['submit'] = array(
@@ -43,4 +44,22 @@
         '#value' => 'Submit results',
     );
     return $form;
+  }
+
+  function shift_cipher_validate_direction($element) {
+    $direction_input = strtolower($element['#value']);
+    if(!($direction_input === 'left' || $direction_input === 'right')) {
+      form_error($element, t("Please enter 'left' or 'right'."));
+    }
+  }
+
+  function shift_cipher_validate_phrase($element) {
+    $input_phrase_array = explode("", strtolower($element['#value']));
+    $letters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+    $punctuation = [" ", ".", ",", "!", "?"];
+    foreach($input_phrase_array as $letter) {
+      if(!(in_array($letter, $letters) || in_array($letter, $punctuation))) {
+        form_error($element, t("Please enter only letters, spaces, and punctuation."));
+      }
+    }
   }
