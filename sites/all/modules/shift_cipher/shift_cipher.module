@@ -16,3 +16,31 @@
     );
     return $items;
   }
+
+  function shift_cipher_form() {
+    $form['shift_value'] = array(
+        '#title' => 'Shift value',
+        '#type' => 'textfield',
+        '#description' => t('Enter the shift value'),
+        '#required' => TRUE,
+    );
+    $form['direction'] = array(
+        '#title' => 'Direction',
+        '#type' => 'textfield',
+        '#description' => t('Enter the shift direction'),
+        '#element_validate' => array('element_validate_state'),
+        '#required' => TRUE,
+    );
+    $form['phrase'] = array(
+        '#title' => 'Phrase',
+        '#type' => 'textfield',
+        '#description' => t('Enter the phrase to be encoded'),
+        '#element_validate' => array('element_validate_state'),
+        '#required' => TRUE,
+    );
+    $form['submit'] = array(
+        '#type' => 'submit',
+        '#value' => 'Submit results',
+    );
+    return $form;
+  }
